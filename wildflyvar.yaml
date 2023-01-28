@@ -1,0 +1,86 @@
+---
+- name: installing wildfly with vars
+  hosts: all
+  become: yes
+  vars:
+    package_name: openjdk-11-jdk
+    user_name: wildfly
+    group_name: wildfly
+    user_home: /opt/wildfly
+    user_shell: /sbin/nologin
+    url: https://github.com/wildfly/wildfly/releases/download/27.0.1.Final/wildfly-27.0.1.Final.tar.gz
+  tasks:
+    - name: installing jdk-11
+      ansible.builtin.apt:
+        name: "{{ package_name }}"
+        update_cache: yes
+        state: present
+    - name: adding group wildfly
+      ansible.builtin.group:
+        name: "{{ group_name }}"
+        system: true
+        state: present   
+    - name: create a wildfly user
+      ansible.builtin.user:
+        name: "{{ user_name }}"
+        create_home: yes
+        group: "{{ group_name }}"
+        home: "{{ user_home }}"
+        shell: "{{ user_shell }}"
+        state: present   
+    - name: creating a directory
+      ansible.builtin.file:
+        path: "{{ user_home }}"
+        state: directory    
+        owner: "{{ user_name }}"
+        group: "{{ group_name }}"
+        mode: 0755                  
+    - name: downloading wildfly
+      ansible.builtin.unarchive:
+        src: "{{ url }}"
+        remote_src: yes
+        dest: /tmp/ 
+    - name: moving wildfile
+      ansible.builtin.copy:
+        src: /tmp/wildfly-27.0.1.Final/
+        dest: "{{ user_home }}"
+        owner: "{{ user_name }}"
+        group: "{{ group_name }}"
+        remote_src: yes    
+    - name: create file
+      ansible.builtin.file:
+        path: /etc/wildfly
+        state: directory  
+    - name: coping
+      ansible.builtin.copy:
+        remote_src: true
+        src: /opt/wildfly/docs/contrib/scripts/systemd/wildfly.conf
+        dest: "{{ user_home }}"
+        owner: "{{ user_name }}"
+        group: "{{ group_name }}"
+    - name: coping
+      ansible.builtin.copy:
+        src: /opt/wildfly/docs/contrib/scripts/systemd/wildfly.service
+        dest: /etc/systemd/system/
+        owner: "{{ user_name }}"
+        group: "{{ group_name }}" 
+        remote_src: yes
+    - name: coping
+      ansible.builtin.copy:
+        remote_src: true
+        src: /opt/wildfly/docs/contrib/scripts/systemd/launch.sh
+        dest: /opt/wildfly/bin/
+        owner: "{{ user_name }}"
+        group: "{{ group_name }}"
+    - name: command to permissions chmod
+      ansible.builtin.command: "sudo sh -c 'chmod +x /opt/wildfly/bin/launch.sh'"  
+    - name: command to permissions chown
+      ansible.builtin.command: "sudo sh -c 'chown -R wildfly:wildfly /opt/wildfly'"         
+    - name: to reload daemon
+      ansible.builtin.systemd:
+        daemon_reload: yes  
+    - name: for starting wildfly
+      ansible.builtin.systemd:
+        name: wildfly
+        state: started
+        enabled: true

@@ -1,0 +1,28 @@
+---
+- name: installing MongoDB
+  hosts: all
+  become: yes
+  tasks:
+    - name: aptkeys
+      ansible.builtin.apt_key:
+        url: https://www.mongodb.org/static/pgp/server-6.0.asc
+        state: present
+    - name: Add specified repository into sources list
+      ansible.builtin.apt_repository:
+        repo: "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu bionic/mongodb-org/6.0 multiverse"
+        state: present    
+    - name: creating a file
+      ansible.builtin.file:
+        path: /etc/apt/sources.list.d/mongodb-org-6.0.list
+        state: touch
+    - name: Install mongodb
+      ansible.builtin.apt:
+        name: mongodb-org
+        update_cache: yes
+        state: present
+    - name: Start service mongodb, if not started
+      ansible.builtin.service:
+        name: mongod
+        state: started    
+    
+     

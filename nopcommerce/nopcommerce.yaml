@@ -1,0 +1,32 @@
+---
+- name: installing nopcommerce
+  hosts: all
+  become: yes
+  tasks:
+    - name: Install a list of packages
+      ansible.builtin.apt:
+        deb: https://packages.microsoft.com/config/ubuntu/20.04/packages-microsoft-prod.deb
+    - name: Install a list of packages
+      ansible.builtin.apt:
+        update_cache: yes
+        pkg:
+        - apt-transport-https
+        - aspnetcore-runtime-7.0
+        - nginx
+        state: present   
+    - name: Make sure a service unit is running
+      ansible.builtin.systemd:
+        state: started
+        name: nginx    
+    - name: copy the manager app context file
+      ansible.builtin.copy:
+        src: default
+        dest: "/etc/nginx/sites-available/default"
+    - name: Change file ownership, group and permissions
+      ansible.builtin.file:
+        path: /var/www/nopCommerce
+    - name: extract tomcat
+      ansible.builtin.unarchive:
+        src: "https://github.com/nopSolutions/nopCommerce/releases/download/release-4.60.1/nopCommerce_4.60.1_NoSource_linux_x64.zip"
+        remote_src: yes
+        dest: /var/www/nopCommerce    

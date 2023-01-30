@@ -1,0 +1,12 @@
+---
+- name: java installation
+  hosts: all
+  become: yes
+  vars:
+    java_package_name: openjdk-11-jdk
+  tasks:
+    - name: installing java
+      ansible.builtin.apt:
+        name: "{{ java_package_name }}"
+        update_cache: yes
+        state: present

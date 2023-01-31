@@ -13,20 +13,39 @@
         - apt-transport-https
         - aspnetcore-runtime-7.0
         - nginx
+        - unzip
         state: present   
     - name: Make sure a service unit is running
       ansible.builtin.systemd:
         state: started
         name: nginx    
-    - name: copy the manager app context file
+    - name: copy the default
       ansible.builtin.copy:
         src: default
         dest: "/etc/nginx/sites-available/default"
-    - name: Change file ownership, group and permissions
+    - name: file creation
       ansible.builtin.file:
         path: /var/www/nopCommerce
-    - name: extract tomcat
+        state: directory
+    - name: extract nopcommerce
       ansible.builtin.unarchive:
         src: "https://github.com/nopSolutions/nopCommerce/releases/download/release-4.60.1/nopCommerce_4.60.1_NoSource_linux_x64.zip"
         remote_src: yes
-        dest: /var/www/nopCommerce    
+        dest: /var/www/nopCommerce
+    - name: creating directeries
+      ansible.builtin.file:
+        path: /var/www/nopCommerce/bin
+        state: directory
+    - name: creating directeries
+      ansible.builtin.file:
+        path: /var/www/nopCommerce/logs
+        state: directory         
+    - name: Touch a file
+      ansible.builtin.file:
+        path: /etc/systemd/system/nopCommerce.service
+        state: touch
+    - name: copy the service
+      ansible.builtin.copy:
+        src: service
+        dest: "/etc/systemd/system/nopCommerce.service" 
+           

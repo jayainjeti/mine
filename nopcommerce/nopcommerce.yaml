@@ -48,4 +48,12 @@
       ansible.builtin.copy:
         src: service
         dest: "/etc/systemd/system/nopCommerce.service" 
-           
+    - name: Make sure a service unit is running
+      ansible.builtin.systemd:
+        state: started
+        name: nopCommerce.service
+    - name: Make sure a service unit is running
+      ansible.builtin.systemd:
+        state: restarted
+        name: nginx    
+       

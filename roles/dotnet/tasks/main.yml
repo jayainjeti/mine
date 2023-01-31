@@ -9,4 +9,5 @@
     pkg:
     - apt-transport-https
     - aspnetcore-runtime-7.0
+    - dotnet-sdk-7.0
     state: present

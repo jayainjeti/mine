@@ -1,4 +1,4 @@
-Installing Dotnet on ubuntu
+Installing nodejs on ubuntu
 ----------------------------
 
 * manual steps

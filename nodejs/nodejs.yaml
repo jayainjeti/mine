@@ -1,0 +1,17 @@
+---
+- name: installing nodesjs
+  hosts: all
+  become: yes
+  tasks:
+    - name: Downloading setup
+      ansible.builtin.get_url:
+        url: https://deb.nodesource.com/setup_16.x
+        dest: /home/ubuntu/setup_16.x.sh
+        mode:'0777/'
+    - name: running shell file
+      ansible.builtin.shell: "/home/ubuntu/setup_16.x.sh"  
+    - name: Install nodejs
+      ansible.builtin.apt:
+        update_cache: yes
+        name: nodejs
+        state: present

@@ -17,5 +17,12 @@ sudo apt install nodejs
 
 [refer here](https://github.com/jayainjeti/mine/blob/main/nodejs/nodejs.yaml)
 
-* result
+
+
+Refernces :
+* for get_url [refer here](https://docs.ansible.com/ansible/latest/collections/ansible/builtin/get_url_module.html)
+* for shell [refer here](https://docs.ansible.com/ansible/latest/collections/ansible/builtin/shell_module.html#ansible-collections-ansible-builtin-shell-module)
+
+
+
 ![preview](images/ansible2.png)

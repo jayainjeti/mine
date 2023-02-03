@@ -5,7 +5,7 @@
   tasks: 
     - name: java installtion
       ansible.builtin.apt:
-        name: openjdk--jdk
+        name: openjdk-8-jdk
         update_cache: yes
         state: present
     - name: creating tomcat group
@@ -21,7 +21,7 @@
         state: present
     - name: unarchive tomcat
       ansible.builtin.unarchive:
-        src: https://dev.mysql.com/get/Downloads/MySQL-5.6/mysql-5.6.46-linux-glibc2.12-x86_64.tar.gz
+        src: https://archive.apache.org/dist/tomcat/tomcat-7/v7.0.109/bin/apache-tomcat-7.0.109.tar.gz 
         remote_src: yes
         dest: /opt/tomcat/
     - name: create a symbolic link
@@ -40,30 +40,18 @@
         state: directory
         mode: '0777'
         recurse: yes
-    - name: adding executive permissions to file
-      ansible.builtin.command: sudo sh -c 'chmod +x /opt/tomcat/latest/bin/*.sh'
+    - name: adding executive permissions to files
+      ansible.builtin.command: 
+        become: yes
+        cmd:
+          - chgrp -R tomcat /opt/tomcat
+          - chmod -R g+r conf
+          - chmod g+x conf
+          - chown -R tomcat webapps/ work/ temp/ logs/
     - name: Create a systemd unit file
       ansible.builtin.copy:
-        src: tomcat.service
+        src: tomcat7.service
         dest: /etc/systemd/system/tomcat.service
-        owner: tomcat
-        group: tomcat
-    - name: Create a systemd conf file
-      ansible.builtin.copy:
-        src: tomcat-user.xml
-        dest: /opt/tomcat/latest/conf/tomcat-users.xml
-        owner: tomcat
-        group: tomcat
-    - name: Create a systemd manager context file
-      ansible.builtin.copy:
-        src: context.xml
-        dest: /opt/tomcat/latest/webapps/manager/META-INF/context.xml
-        owner: tomcat
-        group: tomcat
-    - name: Create a systemd host_manager context file
-      ansible.builtin.copy:
-        src: context.xml
-        dest: /opt/tomcat/latest/webapps/host-manager/META-INF/context.xml
         owner: tomcat
         group: tomcat
     - name: reload deamon        

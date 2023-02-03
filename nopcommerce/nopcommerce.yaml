@@ -39,7 +39,15 @@
     - name: creating directeries
       ansible.builtin.file:
         path: /var/www/nopCommerce/logs
-        state: directory         
+        state: directory  
+    - name: changing file permissions
+      ansible.builtin.command: 
+        chdir: /var/www
+        cmd: sudo chgrp -R www-data nopCommerce/
+    - name: changing file permissions
+      ansible.builtin.command: 
+        chdir: /var/www
+        cmd: sudo chown -R www-data nopCommerce/    
     - name: Touch a file
       ansible.builtin.file:
         path: /etc/systemd/system/nopCommerce.service

@@ -51,6 +51,7 @@
     - name: Make sure a service unit is running
       ansible.builtin.systemd:
         state: started
+        enabled: yes
         name: nopCommerce.service
     - name: Make sure a service unit is running
       ansible.builtin.systemd:

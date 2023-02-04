@@ -41,13 +41,21 @@
         mode: '0777'
         recurse: yes
     - name: adding executive permissions to files
-      ansible.builtin.command: 
-        become: yes
-        cmd:
-          - chgrp -R tomcat /opt/tomcat
-          - chmod -R g+r conf
-          - chmod g+x conf
-          - chown -R tomcat webapps/ work/ temp/ logs/
+      ansible.builtin.command:
+      chdir: /opt/tomcat
+      cmd: sudo chgrp -R tomcat /opt/tomcat
+    - name: adding executive permissions to files
+      ansible.builtin.command:
+      chdir: /opt/tomcat
+      cmd: sudo chmod -R g+r conf
+    - name: adding executive permissions to files
+      ansible.builtin.command:
+      chdir: /opt/tomcat
+      cmd: sudo chmod g+x conf      
+    - name: adding executive permissions to files
+      ansible.builtin.command:
+      chdir: /opt/tomcat
+      cmd: sudo chown -R tomcat webapps/ work/ temp/ logs/
     - name: Create a systemd unit file
       ansible.builtin.copy:
         src: tomcat7.service

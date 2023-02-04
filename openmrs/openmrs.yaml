@@ -16,7 +16,7 @@
         mode: '777'   
     - name: coping war file
       ansible.builtin.copy:
-        src: /home/jaya/mine/mine/openmrs/openmrs.war
+        src: /home/jaya/mine/openmrs/openmrs.war
         dest: /opt/tomcat/webapps/
     - name: Change ownership of openmrs.war file
       ansible.builtin.file:

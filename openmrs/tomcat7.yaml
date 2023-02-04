@@ -46,15 +46,15 @@
         cmd: sudo chgrp -R tomcat /opt/tomcat
     - name: adding executive permissions to files
       ansible.builtin.command:
-        chdir: /opt/tomcat
+        chdir: /opt/tomcat/latest
         cmd: sudo chmod -R g+r conf
     - name: adding executive permissions to files
       ansible.builtin.command:
-        chdir: /opt/tomcat
+        chdir: /opt/tomcat/latest
         cmd: sudo chmod g+x conf      
     - name: adding executive permissions to files
       ansible.builtin.command:
-        chdir: /opt/tomcat
+        chdir: /opt/tomcat/latest
         cmd: sudo chown -R tomcat webapps/ work/ temp/ logs/
     - name: Create a systemd unit file
       ansible.builtin.copy:

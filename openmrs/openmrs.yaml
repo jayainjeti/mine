@@ -11,14 +11,18 @@
       ansible.builtin.command: chown -R tomcat:tomcat /var/lib/OpenMRS
     - name: Download openmrs.war
       ansible.builtin.get_url:
-        url: wget https://sourceforge.net/projects/openmrs/files/releases/OpenMRS_Platform_2.5.0/openmrs.war
-        dest: /home/jaya/mine/mine/openmrs
+        url: https://sourceforge.net/projects/openmrs/files/releases/OpenMRS_Platform_2.5.0/openmrs.war
+        dest: /home/jaya/mine/openmrs
         mode: '777'   
     - name: coping war file
       ansible.builtin.copy:
         src: /home/jaya/mine/mine/openmrs/openmrs.war
         dest: /opt/tomcat/webapps/
-    - name: Recursively change ownership of a directory
-      ansible.builtin.command: chown -R tomcat:tomcat /opt/tomcat/webapps/openmrs.war
+    - name: Change ownership of openmrs.war file
+      ansible.builtin.file:
+        path: /opt/tomcat/webapps/openmrs.war
+        owner: tomcat
+        group: tomcat
+        recurse: yes
 
         

@@ -1,0 +1,14 @@
+---
+pool: default
+
+trigger:
+  - master
+
+jobs:
+  - job: Preparation_job
+    displayName: install softwares
+    steps:
+      - task: DotNetCoreInstaller@1
+        inputs:
+          packageType: 'sdk'
+          version: 6.x

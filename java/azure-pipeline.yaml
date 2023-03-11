@@ -1,0 +1,9 @@
+---
+pool: Default
+
+trigger: main
+
+steps:
+- script: ansible-playbook -i host main.yaml
+  displayname: installing Java 17 from ansible-playbook
+  workingDIrectory: /home/jaya

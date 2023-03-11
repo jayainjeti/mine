@@ -24,5 +24,6 @@
         owner: tomcat
         group: tomcat
         recurse: yes
-
+        mode: '0777'
+        state: directory
         

@@ -13,7 +13,7 @@ Backslash escape sequences
 ## Cursor Movement Commands
 
 * CTRL-A : Move the cursor to begining of the line
-* CTRL-E : MOve the cursor to the end of line
+* CTRL-E : Move the cursor to the end of line
 * CTRL-F: same as right arrow key
 * CTRL-B: same as left arrow key
 * ALT-F: Move cursor forward by one word
